@@ -27,7 +27,7 @@ Git is a distributed version control system that allows you to keep track of you
 - Clone this repository using the `git clone ` command
 - Create your first python script to print 'Hello [your name]'.
 - Commit your changes to the repository
-- Create your own remote repository
+- Crete your own remote repository
 - Push your changes to your remote repository
 - Submit the link to your commit. 
   - Ensure that the link looks like the following with the hash of your commit at the end.
