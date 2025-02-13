@@ -6,3 +6,6 @@
 
 #ignore pycache
 __pycache__/
+
+#ignore node_modules
+/app/node_modules/
