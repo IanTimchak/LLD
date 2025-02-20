@@ -1,7 +1,7 @@
 import eel
 
 # Set web files folder
-eel.init('web')
+eel.init('../web')
 eel.browsers.set_path('electron', 'node_modules/electron/dist/electron.exe')
 
 # Expose a function to JavaScript
