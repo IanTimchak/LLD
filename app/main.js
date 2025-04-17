@@ -18,6 +18,9 @@ function createWindow () {
   // and load the index.html of the app.
   mainWindow.loadURL('http://localhost:8000/index.html');
 
+  //Hide the menu bar
+  //mainWindow.setMenuBarVisibility(false)
+
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 
