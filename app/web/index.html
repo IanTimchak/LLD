@@ -13,26 +13,56 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Custom CSS for styling the chat interface -->
     <link rel="stylesheet" href="stylesheet.css">
-
+    
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row g-0">
-            <div class="col-2 chat-sidebar p-3">
-                <h5 class="text-light">Players</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#" class="text-light text-decoration-none d-block py-2">N/A</a></li>
-                </ul>
+    <nav class="topLayer navbar navbar-expand-lg navbar-transparent position-absolute top-0 start-0 w-100">
+        <div class="container d-flex justify-content-center">
+            <div class="navbar-buttons">
+                <!-- <a href="#tab-1" class="btn btn-primary">1</a>
+                <a href="#tab-2" class="btn btn-primary">2</a> -->
             </div>
-            <div class="col-10 chat-main">
-                <div class="chat-log" id="chat-log">
-                    <!-- fade -->
-                    <div class="chat-log-fade-top"></div>
-                    <div class="chat-log-fade-bottom"></div>
+        </div>
+    </nav>
 
-                    <!-- START Chat messages with alignment and icons -->
+    <div id="tabs">
+        <div class="tab justify-content-center" id="tab-1">
+            <div class="center-panel">
+                <form>
+                  <div class="mb-3">
+                    <label for="serverIp" class="text-light text-decoration-none form-label">Server IP</label>
+                    <input type="text" class=" form-control bg-secondary" id="serverIp" placeholder="Enter server IP" value="127.0.0.1" readonly disabled>
+                  </div>
+                  <div class="mb-3">
+                    <label for="serverPort" class="text-light text-decoration-none form-label">Server Port</label>
+                    <input type="text" class="form-control" id="serverPort" placeholder="Enter server port" value="10998">
+                  </div>
+                  <div class="mb-3">
+                    <label for="characterName" class="text-light text-decoration-none form-label">Character Name</label>
+                    <input type="text" class="form-control" id="characterName" placeholder="Enter character name">
+                  </div>
+                  <a id="attempt_connection" href="#tab-2" class="btn btn-dark w-100">Join</a>
+                </form>
+              </div>
+        </div>
+        <!--        PAGE: CHAT CONTENT!         -->
+        <div id="tab-2" class="container-fluid">
+            <div class="row g-0">
+                <div class="col-2 chat-sidebar p-3">
+                    <h5 class="text-light">Players</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none d-block py-2">N/A</a></li>
+                    </ul>
+                </div>
+                <div class="col-10 chat-main">
+                    <div class="chat-log" id="chat-log">
+                        <!-- fade -->
+                        <div class="chat-log-fade-top"></div>
+                        <div class="chat-log-fade-bottom"></div>
 
+                        <!-- START Chat messages with alignment and icons -->
+                        <!-- 
                     <div class="chat-message user">
                         <div class="chat-icon">U</div>
                         <div class="chat-bubble">Hello!</div>
@@ -99,23 +129,28 @@
                     <div class="chat-message ai">
                         <div class="chat-icon">A</div>
                         <div class="chat-bubble"></div>
+                    </div> -->
+                        <!-- END Chat messages with alignment and icons -->
                     </div>
-                    <!-- END Chat messages with alignment and icons -->
-                </div>
-                <button id="scroll-to-bottom" class="scroll-button">
-                    <span class="material-icons">arrow_downward</span>
-                </button>
-                <div class="chat-input-container">
-                    <div class="chat-input-wrapper">
-                        <input type="text" class="chat-input" placeholder="Type your message here..." id="chat-input">
-                        <button class="send-button btn-primary" id="send-button">
-                            <span class="material-icons">send</span>
-                        </button>
+                    <button id="scroll-to-bottom" class="scroll-button">
+                        <span class="material-icons">arrow_downward</span>
+                    </button>
+                    <div class="chat-input-container">
+                        <div class="chat-input-wrapper">
+                            <input type="text" class="chat-input" placeholder="Type your message here..."
+                                id="chat-input">
+                            <button class="send-button btn-primary" id="send-button">
+                                <span class="material-icons">send</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -126,11 +161,17 @@
     <!-- Eel JS -->
     <script type="text/javascript" src="/eel.js"></script>
     <script src="index.js" defer></script>
+    
     <script type="text/javascript">
         //Use JQUERY to add a on click event to the button
         $(document).ready(function () {
-            $("#send-button").click(function () {
-                eel.say_hello_py("World");
+            
+
+            $("#attempt_connection").click(async function () {
+                const serverIp = $("#serverIp").val();
+                const serverPort = $("#serverPort").val();
+                const characterName = $("#characterName").val();
+                eel.connect_player(serverIp, serverPort, characterName);
             });
         });
 

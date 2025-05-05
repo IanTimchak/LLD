@@ -162,7 +162,7 @@ import socket
 import threading
 
 class PlayerClient:
-    def __init__(self, name, host="127.0.0.1", port=10998):
+    def __init__(self, name, host="127.0.0.1", port=12121):
         self.host = host
         self.port = port
         self._name = name
@@ -179,13 +179,17 @@ class PlayerClient:
         print("[dndnetwork] Connected to server.")
         threading.Thread(target=self.receive_messages, daemon=True).start()
     
+    def set_connection(self, host, port):
+        self.host = host
+        self.port = port
+
     def add_subscriber(self, subscriber):
         self.subscribers.append(subscriber)
 
     def receive_messages(self):
         while True:
             try:
-                data = self.sock.recv(1024)
+                data = self.sock.recv(8192)
                 if not data:
                     break
                 print(data.decode().strip())

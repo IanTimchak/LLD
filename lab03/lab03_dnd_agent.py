@@ -44,12 +44,4 @@ while True:
     break
 
 # Save chat
-with open(Path('lab03/attempts.txt'), 'a') as f:
-  file_string  = ''
-  file_string +=       '-------------------------NEW ATTEMPT-------------------------\n\n\n'
-  file_string += f'Model: {model}\n'
-  file_string += f'Options: {options}\n'
-  file_string += pretty_stringify_chat(messages)
-  file_string += '\n\n\n------------------------END OF ATTEMPT------------------------\n\n\n'
-  f.write(file_string)
 

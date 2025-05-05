@@ -6,6 +6,38 @@ body {
     overflow: hidden;
 }
 
+.topLayer {
+    position: absolute;
+    z-index: 1000;
+}
+.tab {
+    align-items: center;
+    justify-content: center;
+    Height: 100vh;
+    Width: 100%;
+}
+
+.center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.center-panel {
+    position: relative;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    background: rgba(48, 60, 85, 0.9);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+  }
+
 .container-fluid,
 .row {
     margin: 0 !important;

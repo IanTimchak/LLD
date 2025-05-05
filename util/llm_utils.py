@@ -34,7 +34,7 @@ class TemplateChat:
         self.parameters = kwargs
 
     def from_file(template_file, sign=None, **kwargs):
-        with open(Path(template_file), 'r') as f:
+        with open(Path(template_file), 'r', encoding='utf-8') as f:
             template = json.load(f)
 
         return TemplateChat(template, sign, **kwargs)
@@ -50,6 +50,9 @@ class TemplateChat:
         response = self.completion(**kwargs)
         message = response['message']
         self.messages.append({'role': message.role, 'content': message.content})
+        #truncate the first 10 messages if there is more than 25 messages in the chat history.
+        if len(self.messages) > 15:
+            self.messages[:] = [self.messages[0]] + self.messages[6:]
         logging.info(f'{message.role}: {message.content}')
         return response 
 
