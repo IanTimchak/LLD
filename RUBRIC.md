@@ -11,7 +11,7 @@
 
       - Ties to LO1 and LO3 by demonstrating fundamental AI concepts in a working system.
 
-2. **Prompt Engineering and Model Parameter Choice(10 pts)**
+2. **Prompt Engineering and Model Parameter Choice (10 pts)**
 
       - Properly adjusting temperature, max tokens, or other parameters.
 
