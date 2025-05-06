@@ -1,13 +1,23 @@
+
+
 from util.dndnetwork import DungeonMasterServer, PlayerClient
-from util.llm_utils import TemplateChat
+from util.llm_utils import TemplateChat, tool_tracker
+from util.ragu import ChromaDBClient as chroma, OllamaEmbeddingFunction
 
 
 class DungeonMaster:
     def __init__(self):
         self.game_log = ['START']
         self.server = DungeonMasterServer(self.game_log, self.dm_turn_hook)
-        self.chat = TemplateChat.from_file('util/templates/dm_chat.json', sign='lewdlewdlewd')
+        self.chat = TemplateChat.from_file('util/templates/dm_bryan.json', 
+                                           sign='hellogamers',
+                                           process_response=TemplateChat.process_response,
+                                           dungeon_master=self)
         self.start = True
+        self.rag = chroma(
+            collection_name='session_info',
+            embedding_function=OllamaEmbeddingFunction(model_name='nomic-embed-text')
+        )
 
     def start_server(self):
         self.server.start_server()
@@ -27,8 +37,44 @@ class DungeonMaster:
             
             dm_message = self.chat.send(turn_string)
 
+        # Process the DM's message and update the game log
+        self.rag.add_documents([
+            {
+                'id': 'dm_message_' + str(len(self.game_log)),
+                'text': dm_message,
+                'metadata': {'role': 'dm'}
+            }
+        ])
+
+        print(f"[DEBUG] session_info: {self.rag.peek()}")
+
         # Return a message to send to the players for this turn
         return dm_message 
+
+    @tool_tracker
+    def process_function_call(self, function_call):
+        name = function_call.name
+        args = function_call.arguments
+
+        if hasattr(self, name):
+            method = getattr(self, name)  # Get the method by name
+            return method(**args)  # Call the method with the provided arguments
+        else:
+            raise AttributeError(f"Method '{name}' not found in DungeonMaster.")
+    
+    #Tool
+    def retrieve_session_info(self, query: str = "search") -> str:
+        print(f'[DEBUG] retrieve_session_info called with query: {query}')
+        documents = self.rag.query(query, 1)
+        print(f'[DEBUG] Retrieved documents: {documents}')
+        return "\n".join(documents[0])
+        pass
+
+    #Tool
+    def default(self):
+        print(f'[DEBUG] default tool called')
+        return ""
+        pass
 
 
 

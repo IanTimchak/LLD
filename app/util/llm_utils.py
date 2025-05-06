@@ -55,6 +55,7 @@ class TemplateChat:
         self.instance = template
         self.instance['options']['seed'] = hash(str(sign))
         self.messages = self.instance['messages']
+        self.dungeon_master = kwargs['dungeon_master'] if 'dungeon_master' in kwargs else None
         self.end_regex = kwargs['end_regex'] if 'end_regex' in kwargs else None
         self.function_caller = kwargs['function_call_processor'] if 'function_call_processor' in kwargs else None
         process_response_method = kwargs['process_response'] if 'process_response' in kwargs else lambda self, x: x 
@@ -105,3 +106,28 @@ class TemplateChat:
 
     def send(self, message):
         return self.chat_generator.send(message)
+    
+#Newly defined functions starting here
+#----------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------
+    def process_response(self, response, **kwargs):
+        print(f"[DEBUG] processing response")
+        print(f"[DEBUG] response: {response.message.tool_calls}")
+        if response.message.tool_calls:
+            try:
+                for call in response.message.tool_calls:
+                    if call.function.name == 'retrieve_session_info':
+                        print(f"[DEBUG] tool Call detected: {call.function.name}")
+                        self.messages.append({'role': 'tool',
+                                                'name': call.function.name,
+                                                'arguments': call.function.arguments,
+                                                'content': '[TCR] ' + self.dungeon_master.process_function_call(call.function) + ' [/TCR]'
+                                                })
+            except Exception as e:
+                print(f"[ERROR] Error processing tool call: {e}")
+                print("Continuing without tool response...")
+
+        
+        response = self.chat_turn(**kwargs)
+        return response
+    
