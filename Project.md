@@ -16,6 +16,10 @@
 
 - Generation of story/plot events for the players to follow along with.
 
+- Maintaining the story and state of the game.
+
+- Recalling previously mentioned information that may be relevent to the story or gameplay.
+
 - 
 
 ## 2: Prompt Engineering and Model Parameters
