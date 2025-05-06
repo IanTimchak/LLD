@@ -20,7 +20,7 @@
 
 - Recalling previously mentioned information that may be relevent to the story or gameplay.
 
-- 
+### The following sections will go into more detail about how some of the prior scenarios were implemented.
 
 ## 2: Prompt Engineering and Model Parameters
 
