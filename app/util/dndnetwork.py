@@ -31,6 +31,9 @@ class DungeonMasterServer:
         self.game_started = False
         self.running = True
 
+        # Keep track of new player actions
+        self.action_stack = []
+
         # Concurrency helpers for turn-based logic
         self.turn_number = 1
 
@@ -75,12 +78,28 @@ class DungeonMasterServer:
                     self.remove_client(client_sock, reason="Player quit.")
                 else:
                     # The player is submitting their turn action
+                    if client_sock not in self.clients:
+                        return
+                    addr, name  = self.clients[client_sock]
+
+                    incomingMessage = f"[{name}'s submitted response] -> {msg}\n"
+                    self.add_action(incomingMessage)
+
                     self.broadcast_action(client_sock, msg)
                 break
             except ConnectionResetError:
                 self.remove_client(client_sock, reason="Connection reset.")
                 break
 
+    # this function appends the players action to the action stack
+    def add_action(self, action):
+        self.action_stack.append(action)
+        print(f"[LOG] Action added to stack: {action}")
+
+    # this function clears the action stack
+    def clear_action_stack(self):
+        self.action_stack.clear()
+        print("[LOG] Action stack cleared.")
 
     def remove_client(self, client_sock, reason=""):
         if client_sock in self.clients:

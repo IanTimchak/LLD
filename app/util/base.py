@@ -19,7 +19,13 @@ class DungeonMaster:
             dm_message = self.chat.start_chat()
             self.start = False
         else: 
-            dm_message = self.chat.send('\n'.join(self.game_log))
+            #Combine all of the strings in the action stack into a single string, non-list
+            turn_string = ''
+            for action in self.server.action_stack:
+                turn_string += action + " "
+            self.server.clear_action_stack()
+            
+            dm_message = self.chat.send(turn_string)
 
         # Return a message to send to the players for this turn
         return dm_message 
